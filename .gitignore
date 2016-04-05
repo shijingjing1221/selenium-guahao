@@ -1,0 +1,9 @@
+
+
+target/
+
+conf.properties
+conf.properties.my
+.classpath
+.project
+.settings/
