@@ -26,22 +26,12 @@ public class MakeOrder extends Thread {
 	public MakeOrder(String name, Set<Cookie> allCookies) {
 		super(name);
 		setUp();
-		
+
 		for (Cookie cookie : allCookies) {
 			driver.manage().addCookie(cookie);
 		}
 		driver.navigate().refresh();
-		
-	}
 
-	@Override
-	public void run() {
-		System.out.println("Thread- Started" + Thread.currentThread().getName());
-
-//		findHospitalPage();
-//
-//		waitForBegin();
-//		makeTheOrder();
 	}
 
 	public void setUp() {
@@ -50,92 +40,51 @@ public class MakeOrder extends Thread {
 		// System.setProperty("webdriver.chrome.driver",
 		// "/opt/chromium-browser/chromedriver");
 		// driver = new ChromeDriver();
-		baseUrl = "http://item.mi.com/buyphone/mi5";
+		baseUrl = ConfProperty.baseUrl;
 		secondWait = new WebDriverWait(driver, 5);
 		driver.get(baseUrl);
-		
+
 	}
 
-//	public void findHospitalPage() {
-//
-//		WebElement searchHospital = driver.findElement(By.id("words"));
-//		searchHospital.clear();
-//		searchHospital.sendKeys(ConfProperty.orderHospital);
-//		searchHospital.sendKeys(Keys.ENTER);
-//		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderHospital));
-//	}
-//
-//	public void waitForBegin() {
-//		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderDepartment));
-//
-//		Boolean isPageLoaded, isThisWeek;
-//		
-//		isThisWeek = false;
-//		isPageLoaded= false;
-//		while (!isPageLoaded || !isThisWeek) {
-//			try {
-//				By theLastDay = By.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr:first-child th:last-child p");
-//				By nextButton = By.cssSelector("#ksorder_time ksorder_cen_l_r>a");
-//				seleniumHelper.waitUtilPresenceOfElementLocated(theLastDay,
-//						secondWait);
-//				isPageLoaded = true;
-//				String getLastDay = driver.findElement(theLastDay).getText();
-//				if(getLastDay.compareTo(ConfProperty.orderDate) < 0){
-//					seleniumHelper.clickUtilClickable(nextButton,
-//							secondWait);
-//				}else{
-//					isThisWeek = true;
-//				}
-//			} catch (TimeoutException ex) {
-//				System.out.println("Timeout Message: " + ex.getMessage());
-//				driver.navigate().refresh();
-//				isPageLoaded = false;
-//			}
-//		}
-//		
-//		isPageLoaded= false;
-//		while (!isPageLoaded) {
-//			try {
-//				
-//				isPageLoaded = true;
-//			} catch (TimeoutException ex) {
-//				System.out.println("Timeout Message: " + ex.getMessage());
-//				driver.navigate().refresh();
-//				isPageLoaded = false;
-//			}
-//		}
-//		Boolean isOrderStarted = false;
-//		while (!isOrderStarted) {
-//			try {
-////				System.out.println("The selector is: " + "#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""+ConfProperty.orderDate+"\"]");
-//				By orderHideInput = By.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""+ConfProperty.orderDate+"\"]");
-//				WebElement orderLink = seleniumHelper.parent(orderHideInput);
-//				seleniumHelper.clickUtilClickable(orderLink, secondWait);
-//				isOrderStarted = true;
-//			} catch (TimeoutException ex) {
-//				System.out.println("Timeout Message: " + ex.getMessage());
-//				driver.navigate().refresh();
-//				// Following refresh code will cause 059 error
-//				// driver.navigate().to(driver.getCurrentUrl());
-//				isOrderStarted = false;
-//			}
-//		}
-//	}
-//
-//	
-//	public void makeTheOrder() {
-//
-//		seleniumHelper.openInTabUtilCliable(By.linkText("预约挂号"));
-//
-//		seleniumHelper.switichTab();
-//
-//		seleniumHelper.clickUtilClickable(By.id("btnSendCodeOrder"));
-//		seleniumHelper.confirm();
-//		seleniumHelper.selectByValueUtilSelectable(By.id("Rese_db_dl_idselect"), "1");
-//		seleniumHelper.waitForInput(By.id("Rese_db_dl_dxyzid"));
-//
-//		driver.findElement(By.id("Rese_db_qryy_btn")).click();
-//	}
+	@Override
+	public void run() {
+		System.out.println("Thread- Started" + Thread.currentThread().getName());
+		preselect();
+		waitForStart();
+		clickBuy();
+	}
+	
+	public void preselect(){
+		WebElement nextButton = driver.findElement(By.xpath("//li[contains(@title,'高配版')]"));
+		seleniumHelper.clickUtilClickable(nextButton, secondWait);
+		WebElement buyButton = driver.findElement(By.xpath("//li[contains(@title,'白色')]"));
+		seleniumHelper.clickUtilClickable(buyButton, secondWait);
+	}
+
+	public void waitForStart() {
+		Boolean isOrderStarted = false;
+
+		while (!isOrderStarted) {
+			try {
+				WebElement nextButton = driver.findElement(By.linkText("下一步"));
+				seleniumHelper.clickUtilClickable(nextButton, secondWait);
+				isOrderStarted = true;
+			} catch (TimeoutException ex) {
+				System.out.println("Timeout Message: " + ex.getMessage());
+				driver.navigate().refresh();
+				// Following refresh code will cause 059 error
+				// driver.navigate().to(driver.getCurrentUrl());
+				isOrderStarted = false;
+			}
+		}
+	}
+
+	public void clickBuy() {
+		WebElement nextButton = driver.findElement(By.xpath("//li[contains(@title,'')]"));
+		seleniumHelper.clickUtilClickable(nextButton, secondWait);
+		WebElement buyButton = driver.findElement(By.linkText("立即购买"));
+		seleniumHelper.clickUtilClickable(buyButton, secondWait);
+	}
 
 
 }

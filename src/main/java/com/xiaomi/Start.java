@@ -27,7 +27,7 @@ public class Start {
 //		 "/opt/chromium-browser/chromedriver");
 //		 driver = new ChromeDriver();
 //		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		baseUrl = "http://item.mi.com/buyphone/mi5";
+		baseUrl = ConfProperty.baseUrl;
 		driver.get(baseUrl);
 	}
 	

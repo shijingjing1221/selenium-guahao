@@ -6,13 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.common.PropertyHelper;
+import com.common.PropertyObject;
 
 public class ConfProperty {
-	static {
-		PropertyHelper.profilepath = "./xiaomi.properties";
-	}
-//	public static String username = PropertyHelper.getKeyValue("username");
-//	public static String password = PropertyHelper.getKeyValue("password");
+	public static String profilepath = "./xiaomi.properties";
+
+	public static PropertyObject po;
 	public static String baseUrl = "http://item.mi.com/buyphone/mi5";
 	public static String username = "test";
 	public static String password ="test";
@@ -22,6 +21,9 @@ public class ConfProperty {
 	public static String orderDateDate;
 
 	static {
-
+		
+		 po = new PropertyObject(profilepath);
+		 username = po.getKeyValue("username");
+		 password = po.getKeyValue("password");
 	}
 }
