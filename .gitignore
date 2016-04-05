@@ -3,6 +3,7 @@
 target/
 
 conf.properties
+*.properties
 conf.properties.my
 .classpath
 .project
