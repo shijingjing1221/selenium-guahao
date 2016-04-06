@@ -57,8 +57,8 @@ public class MakeOrder extends Thread {
 	public void preselect(){
 //		By choosePrice = By.xpath("//li.J_stepItem[contains(@innerText,'高配')]");
 //		By chooseColor = By.xpath("//li.J_stepItem[contains(@innerText,'白色')]");
-		By choosePrice = By.xpath("//li[contains(@title,'高配版')]");
-		By chooseColor = By.xpath("//li[contains(@title,'白色')]");
+		By choosePrice = By.xpath("//li[contains(@title,'"+ConfProperty.price+"')]");
+		By chooseColor = By.xpath("//li[contains(@title,'"+ConfProperty.color+"')]");
 		
 		WebElement nextButton = driver.findElement(choosePrice);
 		seleniumHelper.clickUtilClickable(nextButton, secondWait);
@@ -71,7 +71,7 @@ public class MakeOrder extends Thread {
 
 		while (!isOrderStarted) {
 			try {
-				By waitBy = By.xpath("li.J_packageItem:last-child");
+				By waitBy = By.cssSelector("li.J_packageItem:last-child");
 				WebElement nextButton = driver.findElement(waitBy);
 				seleniumHelper.clickUtilClickable(nextButton, secondWait);
 				isOrderStarted = true;

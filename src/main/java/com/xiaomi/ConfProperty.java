@@ -19,6 +19,8 @@ public class ConfProperty {
 	public static String orderDateYear;
 	public static String orderDateMonth;
 	public static String orderDateDate;
+	public static String price;
+	public static String color;
 
 	static {
 		
@@ -26,6 +28,8 @@ public class ConfProperty {
 		 username = po.getKeyValue("username");
 		 password = po.getKeyValue("password");
 		 windowCount = Integer.valueOf(po.getKeyValue("windowCount"));
+		 price = po.getKeyValue("price");
+		 color = po.getKeyValue("color");
 		 System.out.printf("Configuration username is %s, password is %s, and windowCount is %s", username, password, windowCount);
 	}
 }
