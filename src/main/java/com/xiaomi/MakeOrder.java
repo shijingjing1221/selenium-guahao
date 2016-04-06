@@ -60,10 +60,8 @@ public class MakeOrder extends Thread {
 		By choosePrice = By.xpath("//li[contains(@title,'"+ConfProperty.price+"')]");
 		By chooseColor = By.xpath("//li[contains(@title,'"+ConfProperty.color+"')]");
 		
-		WebElement nextButton = driver.findElement(choosePrice);
-		seleniumHelper.clickUtilClickable(nextButton, secondWait);
-		WebElement buyButton = driver.findElement(chooseColor);
-		seleniumHelper.clickUtilClickable(buyButton, secondWait);
+		seleniumHelper.clickUtilClickable(choosePrice, secondWait);
+		seleniumHelper.clickUtilClickable(chooseColor, secondWait);
 	}
 
 	public void waitForStart() {
