@@ -22,6 +22,7 @@ public class MakeOrder extends Thread {
 	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
 	public WebDriverWait secondWait;
+	public WebDriverWait quickRefreshWait;
 
 	public MakeOrder(String name, Set<Cookie> allCookies) {
 		super(name);
@@ -41,7 +42,8 @@ public class MakeOrder extends Thread {
 		// "/opt/chromium-browser/chromedriver");
 		// driver = new ChromeDriver();
 		baseUrl = ConfProperty.baseUrl;
-		secondWait = new WebDriverWait(driver, 5);
+		secondWait = new WebDriverWait(driver, 5);//Timeout within 5 second, and retry every 500 MilliSecond
+		quickRefreshWait =  new WebDriverWait(driver, 5 , 5);//Timeout within 5 second, and retry every 5 MilliSecond
 		driver.get(baseUrl);
 
 	}
@@ -70,10 +72,10 @@ public class MakeOrder extends Thread {
 		while (!isOrderStarted) {
 			try {
 				By waitBy = By.cssSelector("li.J_packageItem:last-child");
-				seleniumHelper.clickUtilClickable(waitBy, secondWait);
+				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
 				isOrderStarted = true;
 			} catch (TimeoutException ex) {
-				System.out.println("Timeout Message: " + ex.getMessage());
+//				System.out.println("Timeout Message: " + ex.getMessage());
 				isOrderStarted = false;
 			}
 		}
@@ -84,13 +86,10 @@ public class MakeOrder extends Thread {
 		while (!isBuy) {
 			try {
 				By buyButton = By.linkText("立即购买");
-				seleniumHelper.clickUtilClickable(buyButton, secondWait);
+				seleniumHelper.clickUtilClickable(buyButton, quickRefreshWait);
 				isBuy = true;
 			} catch (TimeoutException ex) {
-				System.out.println("Timeout Message: " + ex.getMessage());
-//				driver.navigate().refresh();
-				// Following refresh code will cause 059 error
-				// driver.navigate().to(driver.getCurrentUrl());
+//				System.out.println("Timeout Message: " + ex.getMessage());
 				isBuy = false;
 			}
 		}
