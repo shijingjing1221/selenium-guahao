@@ -55,9 +55,14 @@ public class MakeOrder extends Thread {
 	}
 	
 	public void preselect(){
-		WebElement nextButton = driver.findElement(By.xpath("//li[contains(@title,'高配版')]"));
+//		By choosePrice = By.xpath("//li.J_stepItem[contains(@innerText,'高配')]");
+//		By chooseColor = By.xpath("//li.J_stepItem[contains(@innerText,'白色')]");
+		By choosePrice = By.xpath("//li[contains(@title,'高配版')]");
+		By chooseColor = By.xpath("//li[contains(@title,'白色')]");
+		
+		WebElement nextButton = driver.findElement(choosePrice);
 		seleniumHelper.clickUtilClickable(nextButton, secondWait);
-		WebElement buyButton = driver.findElement(By.xpath("//li[contains(@title,'白色')]"));
+		WebElement buyButton = driver.findElement(chooseColor);
 		seleniumHelper.clickUtilClickable(buyButton, secondWait);
 	}
 
@@ -66,7 +71,8 @@ public class MakeOrder extends Thread {
 
 		while (!isOrderStarted) {
 			try {
-				WebElement nextButton = driver.findElement(By.linkText("下一步"));
+				By waitBy = By.xpath("li.J_packageItem:last-child");
+				WebElement nextButton = driver.findElement(waitBy);
 				seleniumHelper.clickUtilClickable(nextButton, secondWait);
 				isOrderStarted = true;
 			} catch (TimeoutException ex) {
@@ -80,10 +86,21 @@ public class MakeOrder extends Thread {
 	}
 
 	public void clickBuy() {
-		WebElement nextButton = driver.findElement(By.xpath("//li[contains(@title,'')]"));
-		seleniumHelper.clickUtilClickable(nextButton, secondWait);
-		WebElement buyButton = driver.findElement(By.linkText("立即购买"));
-		seleniumHelper.clickUtilClickable(buyButton, secondWait);
+		Boolean isBuy = false;
+		while (!isBuy) {
+			try {
+				WebElement buyButton = driver.findElement(By.linkText("立即购买"));
+				seleniumHelper.clickUtilClickable(buyButton, secondWait);
+				isBuy = true;
+			} catch (TimeoutException ex) {
+				System.out.println("Timeout Message: " + ex.getMessage());
+				driver.navigate().refresh();
+				// Following refresh code will cause 059 error
+				// driver.navigate().to(driver.getCurrentUrl());
+				isBuy = false;
+			}
+		}
+
 	}
 
 

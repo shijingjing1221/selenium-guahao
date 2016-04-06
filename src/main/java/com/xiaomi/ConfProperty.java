@@ -25,5 +25,7 @@ public class ConfProperty {
 		 po = new PropertyObject(profilepath);
 		 username = po.getKeyValue("username");
 		 password = po.getKeyValue("password");
+		 windowCount = Integer.valueOf(po.getKeyValue("windowCount"));
+		 System.out.printf("Configuration username is %s, password is %s, and windowCount is %s", username, password, windowCount);
 	}
 }
