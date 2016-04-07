@@ -59,7 +59,7 @@ public class Start {
 	}
 
 	@Test
-	public void testGuahaoTestV3() throws Exception {
+	public void buy() throws Exception {
 		loginThePage();
 		Set<Cookie> allCookies = getSession();
 		Integer current = 0;

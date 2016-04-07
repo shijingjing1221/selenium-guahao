@@ -54,6 +54,11 @@ public class MakeOrder extends Thread {
 		preselect();
 		waitForStart();
 		clickBuy();
+		clickOut();
+		clickOut();
+		chooseAddress();
+		clickOut();
+		
 	}
 	
 	public void preselect(){
@@ -65,6 +70,7 @@ public class MakeOrder extends Thread {
 		seleniumHelper.clickUtilClickable(choosePrice, secondWait);
 		seleniumHelper.clickUtilClickable(chooseColor, secondWait);
 	}
+	
 
 	public void waitForStart() {
 		Boolean isOrderStarted = false;
@@ -94,6 +100,27 @@ public class MakeOrder extends Thread {
 			}
 		}
 
+	}
+	
+	public void keepClicking(By waitBy){
+		Boolean isStarted = false;
+
+		while (!isStarted) {
+			try {
+				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
+				isStarted = true;
+			} catch (TimeoutException ex) {
+				isStarted = false;
+			}
+		}		
+	}
+	
+	public void clickOut(){
+		keepClicking(By.linkText("去结算"));		
+	}
+	
+	public void chooseAddress(){
+		keepClicking(By.cssSelector("#J_addressList .address-item.J_addressItem:first-child"));
 	}
 
 
