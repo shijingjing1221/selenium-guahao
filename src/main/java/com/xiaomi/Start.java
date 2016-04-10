@@ -21,7 +21,7 @@ public class Start {
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new FirefoxDriver();
+		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
 //		 System.setProperty("webdriver.chrome.driver",
 //		 "/opt/chromium-browser/chromedriver");

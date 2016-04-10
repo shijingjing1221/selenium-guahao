@@ -10,6 +10,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -36,7 +37,7 @@ public class MakeOrder extends Thread {
 	}
 
 	public void setUp() {
-		driver = new FirefoxDriver();
+		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
 		// System.setProperty("webdriver.chrome.driver",
 		// "/opt/chromium-browser/chromedriver");
@@ -72,35 +73,35 @@ public class MakeOrder extends Thread {
 	}
 	
 
-	public void waitForStart() {
-		Boolean isOrderStarted = false;
-
-		while (!isOrderStarted) {
-			try {
-				By waitBy = By.cssSelector("li.J_packageItem:last-child");
-				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
-				isOrderStarted = true;
-			} catch (TimeoutException ex) {
-//				System.out.println("Timeout Message: " + ex.getMessage());
-				isOrderStarted = false;
-			}
-		}
-	}
-
-	public void clickBuy() {
-		Boolean isBuy = false;
-		while (!isBuy) {
-			try {
-				By buyButton = By.linkText("立即购买");
-				seleniumHelper.clickUtilClickable(buyButton, quickRefreshWait);
-				isBuy = true;
-			} catch (TimeoutException ex) {
-//				System.out.println("Timeout Message: " + ex.getMessage());
-				isBuy = false;
-			}
-		}
-
-	}
+//	public void waitForStart() {
+//		Boolean isOrderStarted = false;
+//
+//		while (!isOrderStarted) {
+//			try {
+//				By waitBy = By.cssSelector("li.J_packageItem:last-child");
+//				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
+//				isOrderStarted = true;
+//			} catch (TimeoutException ex) {
+////				System.out.println("Timeout Message: " + ex.getMessage());
+//				isOrderStarted = false;
+//			}
+//		}
+//	}
+//
+//	public void clickBuy() {
+//		Boolean isBuy = false;
+//		while (!isBuy) {
+//			try {
+//				By buyButton = By.linkText("立即购买");
+//				seleniumHelper.clickUtilClickable(buyButton, quickRefreshWait);
+//				isBuy = true;
+//			} catch (TimeoutException ex) {
+////				System.out.println("Timeout Message: " + ex.getMessage());
+//				isBuy = false;
+//			}
+//		}
+//
+//	}
 	
 	public void keepClicking(By waitBy){
 		Boolean isStarted = false;
@@ -109,10 +110,18 @@ public class MakeOrder extends Thread {
 			try {
 				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
 				isStarted = true;
-			} catch (TimeoutException ex) {
+			} catch (Exception ex) {
 				isStarted = false;
 			}
 		}		
+	}
+	
+	public void waitForStart(){
+		keepClicking(By.cssSelector("li.J_packageItem:last-child"));		
+	}
+	
+	public void clickBuy(){
+		keepClicking(By.linkText("立即购买"));
 	}
 	
 	public void clickOut(){
