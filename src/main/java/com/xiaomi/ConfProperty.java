@@ -15,6 +15,7 @@ public class ConfProperty {
 	public static String baseUrl = "http://item.mi.com/buyphone/mi5";
 	public static String username = "test";
 	public static String password ="test";
+	public static Integer waitBeforeStartTimeSecond;
 	public static Integer windowCount = 1;
 	public static String orderDateYear;
 	public static String orderDateMonth;
@@ -30,6 +31,7 @@ public class ConfProperty {
 		 windowCount = Integer.valueOf(po.getKeyValue("windowCount"));
 		 price = po.getKeyValue("price");
 		 color = po.getKeyValue("color");
+		 waitBeforeStartTimeSecond = Integer.valueOf(po.getKeyValue("waitBeforeStartTimeSecond"));
 		 System.out.printf("Configuration username is %s, password is %s, and windowCount is %s", username, password, windowCount);
 	}
 }

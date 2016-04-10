@@ -44,7 +44,7 @@ public class MakeOrder extends Thread {
 		// driver = new ChromeDriver();
 		baseUrl = ConfProperty.baseUrl;
 		secondWait = new WebDriverWait(driver, 5);//Timeout within 5 second, and retry every 500 MilliSecond
-		quickRefreshWait =  new WebDriverWait(driver, 5 , 5);//Timeout within 5 second, and retry every 5 MilliSecond
+		quickRefreshWait =  new WebDriverWait(driver, ConfProperty.waitBeforeStartTimeSecond  , 1);//Timeout within 1 hour second, and retry every 1 MilliSecond
 		driver.get(baseUrl);
 
 	}
@@ -63,8 +63,6 @@ public class MakeOrder extends Thread {
 	}
 	
 	public void preselect(){
-//		By choosePrice = By.xpath("//li.J_stepItem[contains(@innerText,'高配')]");
-//		By chooseColor = By.xpath("//li.J_stepItem[contains(@innerText,'白色')]");
 		By choosePrice = By.xpath("//li[contains(@title,'"+ConfProperty.price+"')]");
 		By chooseColor = By.xpath("//li[contains(@title,'"+ConfProperty.color+"')]");
 		
@@ -73,49 +71,24 @@ public class MakeOrder extends Thread {
 	}
 	
 
-//	public void waitForStart() {
-//		Boolean isOrderStarted = false;
-//
-//		while (!isOrderStarted) {
-//			try {
-//				By waitBy = By.cssSelector("li.J_packageItem:last-child");
-//				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
-//				isOrderStarted = true;
-//			} catch (TimeoutException ex) {
-////				System.out.println("Timeout Message: " + ex.getMessage());
-//				isOrderStarted = false;
-//			}
-//		}
-//	}
-//
-//	public void clickBuy() {
-//		Boolean isBuy = false;
-//		while (!isBuy) {
-//			try {
-//				By buyButton = By.linkText("立即购买");
-//				seleniumHelper.clickUtilClickable(buyButton, quickRefreshWait);
-//				isBuy = true;
-//			} catch (TimeoutException ex) {
-////				System.out.println("Timeout Message: " + ex.getMessage());
-//				isBuy = false;
-//			}
-//		}
-//
-//	}
-	
 	public void keepClicking(By waitBy){
-		Boolean isStarted = false;
+		seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);		
+}
 
-		while (!isStarted) {
-			try {
-				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
-				isStarted = true;
-			} catch (Exception ex) {
-				isStarted = false;
-			}
-		}		
-	}
 	
+//	public void keepClicking(By waitBy){
+//		Boolean isStarted = false;
+//
+//		while (!isStarted) {
+//			try {
+//				seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
+//				isStarted = true;
+//			} catch (Exception ex) {
+//				isStarted = false;
+//			}
+//		}		
+//	}
+//	
 	public void waitForStart(){
 		keepClicking(By.cssSelector("li.J_packageItem:last-child"));		
 	}
