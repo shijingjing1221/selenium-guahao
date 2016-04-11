@@ -7,8 +7,10 @@ import com.common.Browser;
 public class ChooseBrowser {
 	
 	public static WebDriver myBrowser(){
-		return Browser.getChrome();
-//		return Browser.getFirefox();
+//		WebDriver driver = Browser.getChrome();
+		WebDriver driver = Browser.getFirefox(); 
+//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		return driver;
 	}
 
 }

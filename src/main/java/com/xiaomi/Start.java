@@ -23,22 +23,10 @@ public class Start {
 	public void setUp() throws Exception {
 		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
-//		 System.setProperty("webdriver.chrome.driver",
-//		 "/opt/chromium-browser/chromedriver");
-//		 driver = new ChromeDriver();
-//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		baseUrl = ConfProperty.baseUrl;
 		driver.get(baseUrl);
 	}
 	
-//	public void loginThePage() {
-//		seleniumHelper.clickUtilClickable(By.id("denglu"));
-//		seleniumHelper.sendkeyUtilPresence(By.id("truename"), ConfProperty.trueName);
-//		seleniumHelper.sendkeyUtilPresence(By.id("sfzhm"), ConfProperty.persionId);
-//		seleniumHelper.waitForInput(By.id("yzm"));
-//		driver.findElement(By.xpath("//img[contains(@src,'http://images.guahao114.com/images/v2_logindl.gif')]"))
-//				.click();
-//	}
 	
 	public void loginThePage() {
 		System.out.printf("The username is %s, and the password is %s\n", ConfProperty.username, ConfProperty.password);

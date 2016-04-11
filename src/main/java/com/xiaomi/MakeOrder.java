@@ -39,9 +39,6 @@ public class MakeOrder extends Thread {
 	public void setUp() {
 		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
-		// System.setProperty("webdriver.chrome.driver",
-		// "/opt/chromium-browser/chromedriver");
-		// driver = new ChromeDriver();
 		baseUrl = ConfProperty.baseUrl;
 		secondWait = new WebDriverWait(driver, 5);//Timeout within 5 second, and retry every 500 MilliSecond
 		quickRefreshWait =  new WebDriverWait(driver, ConfProperty.waitBeforeStartTimeSecond  , 1);//Timeout within 1 hour second, and retry every 1 MilliSecond

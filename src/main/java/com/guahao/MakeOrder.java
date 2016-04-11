@@ -14,6 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.common.SeleniumHelper;
+import com.guahao.ConfProperty;
 
 public class MakeOrder extends Thread {
 	private WebDriver driver;
@@ -22,16 +23,17 @@ public class MakeOrder extends Thread {
 	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
 	public WebDriverWait secondWait;
+	public WebDriverWait quickRefreshWait;
 
 	public MakeOrder(String name, Set<Cookie> allCookies) {
 		super(name);
 		setUp();
-		
+
 		for (Cookie cookie : allCookies) {
 			driver.manage().addCookie(cookie);
 		}
 		driver.navigate().refresh();
-		
+
 	}
 
 	@Override
@@ -45,15 +47,14 @@ public class MakeOrder extends Thread {
 	}
 
 	public void setUp() {
-		driver = new FirefoxDriver();
+		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
-		// System.setProperty("webdriver.chrome.driver",
-		// "/opt/chromium-browser/chromedriver");
-		// driver = new ChromeDriver();
+
 		baseUrl = ConfProperty.baseUrl;
 		secondWait = new WebDriverWait(driver, 5);
+		quickRefreshWait = new WebDriverWait(driver, ConfProperty.waitBeforeStartTimeSecond, 1);
 		driver.get(baseUrl);
-		
+
 	}
 
 	public void findHospitalPage() {
@@ -69,21 +70,19 @@ public class MakeOrder extends Thread {
 		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderDepartment));
 
 		Boolean isPageLoaded, isThisWeek;
-		
+
 		isThisWeek = false;
-		isPageLoaded= false;
+		isPageLoaded = false;
 		while (!isPageLoaded || !isThisWeek) {
 			try {
 				By theLastDay = By.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr:first-child th:last-child p");
-				By nextButton = By.cssSelector("#ksorder_time ksorder_cen_l_r>a");
-				seleniumHelper.waitUtilPresenceOfElementLocated(theLastDay,
-						secondWait);
+				By nextButton = By.cssSelector("#ksorder_time .ksorder_cen_l_r>a.ksorder_btn_right");
+				seleniumHelper.waitUtilPresenceOfElementLocated(theLastDay, secondWait);
 				isPageLoaded = true;
 				String getLastDay = driver.findElement(theLastDay).getText();
-				if(getLastDay.compareTo(ConfProperty.orderDate) < 0){
-					seleniumHelper.clickUtilClickable(nextButton,
-							secondWait);
-				}else{
+				if (getLastDay.compareTo(ConfProperty.orderDate) < 0) {
+					seleniumHelper.clickUtilClickable(nextButton, secondWait);
+				} else {
 					isThisWeek = true;
 				}
 			} catch (TimeoutException ex) {
@@ -92,42 +91,24 @@ public class MakeOrder extends Thread {
 				isPageLoaded = false;
 			}
 		}
-		
-		isPageLoaded= false;
-		while (!isPageLoaded) {
-			try {
-				
-				isPageLoaded = true;
-			} catch (TimeoutException ex) {
-				System.out.println("Timeout Message: " + ex.getMessage());
-				driver.navigate().refresh();
-				isPageLoaded = false;
-			}
-		}
+
 		Boolean isOrderStarted = false;
 		while (!isOrderStarted) {
 			try {
-//				System.out.println("The selector is: " + "#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""+ConfProperty.orderDate+"\"]");
-				By orderHideInput = By.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""+ConfProperty.orderDate+"\"]");
-//				By orderLink = By.cssSelector("input[value~=\""+ConfProperty.orderDate+"\"]");
-//				By orderLink = By.xpath("//#ksorder_time/.ksorder_cen_l_t_c/table/tr/td.ksorder_kyy/input[contains(value, '"+ConfProperty.orderDate+"')]");
-//				By orderLink = By.xpath("//#ksorder_time/.ksorder_cen_l_t_c/table/tr/td.ksorder_kyy/input[type='hidden']");
-//				By orderLink = By.xpath("//input[contains(value, '"+ConfProperty.orderDate+"')]");
-//				seleniumHelper.clickUtilClickable(orderLink);
-				WebElement orderLink = seleniumHelper.parent(orderHideInput);
-				seleniumHelper.clickUtilClickable(orderLink, secondWait);
+				By orderHideInput = By
+						.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""
+								+ ConfProperty.orderDate + "\"]");
+				WebElement orderButton = seleniumHelper.parent(orderHideInput);
+				seleniumHelper.clickUtilClickable(orderButton, secondWait);
 				isOrderStarted = true;
 			} catch (TimeoutException ex) {
 				System.out.println("Timeout Message: " + ex.getMessage());
 				driver.navigate().refresh();
-				// Following refresh code will cause 059 error
-				// driver.navigate().to(driver.getCurrentUrl());
 				isOrderStarted = false;
 			}
 		}
 	}
 
-	
 	public void makeTheOrder() {
 
 		seleniumHelper.openInTabUtilCliable(By.linkText("预约挂号"));
@@ -141,18 +122,23 @@ public class MakeOrder extends Thread {
 
 		driver.findElement(By.id("Rese_db_qryy_btn")).click();
 	}
-//	public void makeTheOrder() {
-//
-//		seleniumHelper.switchFrameUtilLoaded(By.className("cboxIframe"));
-//		seleniumHelper.openInTabUtilCliable(By.linkText("预约挂号"));
-//
-//		seleniumHelper.switichTab();
-//
-//		seleniumHelper.clickUtilClickable(By.xpath("//input[contains(@value,'点击获取')]"));
-//		seleniumHelper.selectByValueUtilSelectable(By.id("baoxiao"), "1");
-//		seleniumHelper.waitForInput(By.id("dxcode1"));
-//
-//		driver.findElement(By.xpath("//img[contains(@src,'../images/v2_queren.gif')]")).click();
-//	}
+
+	public void keepClicking(By waitBy) {
+		seleniumHelper.clickUtilClickable(waitBy, quickRefreshWait);
+	}
+	
+	public void keepRefreshing(By waitBy){
+		Boolean isStarted = false;
+		while (!isStarted) {
+			try {
+				seleniumHelper.clickUtilClickable(waitBy, secondWait);
+				isStarted = true;
+			} catch (TimeoutException ex) {
+				System.out.println("Timeout Message: " + ex.getMessage());
+				driver.navigate().refresh();
+				isStarted = false;
+			}
+		}
+	}
 
 }

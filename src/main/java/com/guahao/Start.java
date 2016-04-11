@@ -21,12 +21,8 @@ public class Start {
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new FirefoxDriver();
+		driver = ChooseBrowser.myBrowser();
 		seleniumHelper = new SeleniumHelper(driver);
-//		 System.setProperty("webdriver.chrome.driver",
-//		 "/opt/chromium-browser/chromedriver");
-//		 driver = new ChromeDriver();
-//		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		baseUrl = ConfProperty.baseUrl;
 		driver.get(baseUrl);
 	}
@@ -51,7 +47,7 @@ public class Start {
 	}
 
 	@Test
-	public void testGuahaoTestV3() throws Exception {
+	public void guahao() throws Exception {
 		loginThePage();
 		Set<Cookie> allCookies = getSession();
 		Integer current = 0;
