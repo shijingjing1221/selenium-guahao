@@ -95,11 +95,16 @@ public class MakeOrder extends Thread {
 		Boolean isOrderStarted = false;
 		while (!isOrderStarted) {
 			try {
-				By orderHideInput = By
-						.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""
-								+ ConfProperty.orderDate + "\"]");
-				WebElement orderButton = seleniumHelper.parent(orderHideInput);
-				seleniumHelper.clickUtilClickable(orderButton, secondWait);
+//				By orderHideInput = By
+//						.cssSelector("#ksorder_time .ksorder_cen_l_t_c table tr td.ksorder_kyy input[value*=\""
+//								+ ConfProperty.orderDate + "\"]");
+//				WebElement orderButton = seleniumHelper.parent(orderHideInput);
+//				seleniumHelper.clickUtilClickable(orderButton, secondWait);
+				
+				By orderHideInput = By.xpath("//input[contains(@value,'"
+								+ ConfProperty.orderDate + "')]/..");
+				seleniumHelper.clickUtilClickable(orderHideInput, secondWait);
+				
 				isOrderStarted = true;
 			} catch (TimeoutException ex) {
 				System.out.println("Timeout Message: " + ex.getMessage());
