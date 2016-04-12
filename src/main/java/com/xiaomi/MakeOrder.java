@@ -52,7 +52,7 @@ public class MakeOrder extends Thread {
 		preselect();
 		waitForStart();
 		clickBuy();
-		clickOut();
+		keepClicking(By.id("nextBtn"));
 		clickOut();
 		chooseAddress();
 		clickOut();
