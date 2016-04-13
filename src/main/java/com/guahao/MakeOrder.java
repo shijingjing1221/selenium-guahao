@@ -120,7 +120,7 @@ public class MakeOrder extends Thread {
 
 	public void makeTheOrder() {
 
-		seleniumHelper.openInTabUtilCliable(By.xpath("//div[@id='ksorder_djgh_doctor']/div[last()]//a[text()='预约挂号']"));//Click 预约挂号
+		seleniumHelper.openInTabUtilCliable(By.xpath("//div[@id='ksorder_djgh_doctor']/descendant::a[text()='预约挂号'][last()]"));//Click 预约挂号
 
 		seleniumHelper.switichTab();
 
