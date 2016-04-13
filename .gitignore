@@ -2,9 +2,9 @@
 
 target/
 
-conf.properties
 *.properties
-conf.properties.my
+*.properties.my
+*.properties.test
 .classpath
 .project
 .settings/

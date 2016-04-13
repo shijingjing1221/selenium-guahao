@@ -23,6 +23,7 @@ public class MakeOrder extends Thread {
 	private boolean acceptNextAlert = true;
 	private StringBuffer verificationErrors = new StringBuffer();
 	public WebDriverWait secondWait;
+	public WebDriverWait minuteWait;
 	public WebDriverWait quickRefreshWait;
 
 	public MakeOrder(String name, Set<Cookie> allCookies) {
@@ -51,7 +52,8 @@ public class MakeOrder extends Thread {
 		seleniumHelper = new SeleniumHelper(driver);
 
 		baseUrl = ConfProperty.baseUrl;
-		secondWait = new WebDriverWait(driver, 5);
+		secondWait = new WebDriverWait(driver, 5, 1);
+		minuteWait = new WebDriverWait(driver, 60, 1);
 		quickRefreshWait = new WebDriverWait(driver, ConfProperty.waitBeforeStartTimeSecond, 1);
 		driver.get(baseUrl);
 
@@ -63,11 +65,13 @@ public class MakeOrder extends Thread {
 		searchHospital.clear();
 		searchHospital.sendKeys(ConfProperty.orderHospital);
 		searchHospital.sendKeys(Keys.ENTER);
-		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderHospital));
+		keepRefreshing(By.linkText(ConfProperty.orderHospital));
+//		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderHospital));
 	}
 
 	public void waitForBegin() {
-		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderDepartment));
+//		seleniumHelper.clickUtilClickable(By.linkText(ConfProperty.orderDepartment));
+		keepRefreshing(By.linkText(ConfProperty.orderDepartment));
 
 		Boolean isPageLoaded, isThisWeek;
 
@@ -101,7 +105,7 @@ public class MakeOrder extends Thread {
 //				WebElement orderButton = seleniumHelper.parent(orderHideInput);
 //				seleniumHelper.clickUtilClickable(orderButton, secondWait);
 				
-				By orderHideInput = By.xpath("//input[contains(@value,'"
+				By orderHideInput = By.xpath("//td[contains(@class,'ksorder_kyy')]/input[contains(@value,'"
 								+ ConfProperty.orderDate + "')]/..");
 				seleniumHelper.clickUtilClickable(orderHideInput, secondWait);
 				
