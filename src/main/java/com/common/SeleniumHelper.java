@@ -9,7 +9,7 @@ import org.openqa.selenium.*;
 
 public class SeleniumHelper {
 	public static Integer waitSecond = 30; 
-	public static Integer longWaitSecond = 600; 
+	public static Integer longWaitSecond = 6000; 
 	protected WebDriver driver;
 	protected WebDriverWait defaultWait;
 	protected WebDriverWait longWait;
@@ -54,8 +54,8 @@ public class SeleniumHelper {
 	
 
 	public void selectByValueUtilSelectable(By selectBy, String value) {
-		WebDriverWait wait = getWait();
-		wait.until(ExpectedConditions.presenceOfElementLocated(selectBy));
+		WebDriverWait wait = getWait(600);
+//		wait.until(ExpectedConditions.presenceOfElementLocated(selectBy));
 		WebElement element = driver.findElement(selectBy);
 
 		// wait.until(ExpectedConditions.elementToBeSelected(selectBy));
@@ -90,9 +90,11 @@ public class SeleniumHelper {
 	}
 
 	public boolean switichTab() {
-		String currentWindow = driver.getWindowHandle();
 		driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "\t");
-		driver.switchTo().window(currentWindow);
+		 for(String winHandle : driver.getWindowHandles()){
+	          driver.switchTo().window(winHandle);
+	        }
+		System.out.println("The current window url is: " + driver.getCurrentUrl());
 		return true;
 	}
 

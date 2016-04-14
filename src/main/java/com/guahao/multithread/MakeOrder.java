@@ -1,4 +1,4 @@
-package com.guahao;
+package com.guahao.multithread;
 
 import java.util.List;
 import java.util.Set;
@@ -14,6 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.common.SeleniumHelper;
+import com.guahao.ChooseBrowser;
 import com.guahao.ConfProperty;
 
 public class MakeOrder extends Thread {

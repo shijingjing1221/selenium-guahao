@@ -1,4 +1,4 @@
-package com.guahao;
+package com.guahao.multithread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.common.SeleniumHelper;
+import com.guahao.ChooseBrowser;
+import com.guahao.ConfProperty;
 
 public class Start {
 	private WebDriver driver;
